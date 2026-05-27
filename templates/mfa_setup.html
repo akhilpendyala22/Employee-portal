@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %}Enable 2FA · Employee Portal{% endblock %}
+{% block content %}
+<div class="card">
+    <h1>Enable two-factor authentication</h1>
+    <p>Scan this QR code with Google Authenticator, 1Password, Authy, or any TOTP app.</p>
+    <img src="{{ url_for('mfa_qr') }}" alt="TOTP QR code" class="qr">
+    <p class="muted">Manual key: <code>{{ secret }}</code></p>
+    <form method="POST" novalidate>
+        {{ form.hidden_tag() }}
+        <div class="field">
+            {{ form.token.label }}
+            {{ form.token(autocomplete="one-time-code", inputmode="numeric") }}
+            {% for e in form.token.errors %}<p class="err">{{ e }}</p>{% endfor %}
+        </div>
+        {{ form.submit(class_="btn primary", value="Activate") }}
+    </form>
+</div>
+{% endblock %}

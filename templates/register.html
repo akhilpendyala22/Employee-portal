@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}Register · Employee Portal{% endblock %}
+{% block content %}
+<div class="card">
+    <h1>Create account</h1>
+    <form method="POST" novalidate>
+        {{ form.hidden_tag() }}
+        <div class="field">
+            {{ form.username.label }}{{ form.username(autocomplete="username") }}
+            {% for e in form.username.errors %}<p class="err">{{ e }}</p>{% endfor %}
+        </div>
+        <div class="field">
+            {{ form.email.label }}{{ form.email(autocomplete="email") }}
+            {% for e in form.email.errors %}<p class="err">{{ e }}</p>{% endfor %}
+        </div>
+        <div class="field">
+            {{ form.password.label }}{{ form.password(autocomplete="new-password") }}
+            {% for e in form.password.errors %}<p class="err">{{ e }}</p>{% endfor %}
+        </div>
+        <div class="field">
+            {{ form.confirm.label }}{{ form.confirm(autocomplete="new-password") }}
+            {% for e in form.confirm.errors %}<p class="err">{{ e }}</p>{% endfor %}
+        </div>
+        {{ form.submit(class_="btn primary") }}
+    </form>
+    <p class="muted">Passwords need 12+ chars, mixed case, digit, and symbol.</p>
+</div>
+{% endblock %}

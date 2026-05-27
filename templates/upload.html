@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block title %}Upload · Employee Portal{% endblock %}
+{% block content %}
+<div class="card">
+    <h1>Upload document</h1>
+    <p class="muted">PDF, PNG, JPG, DOCX, or TXT. Max 5 MB.</p>
+    <form method="POST" enctype="multipart/form-data" novalidate>
+        {{ form.hidden_tag() }}
+        <div class="field">
+            {{ form.document.label }}{{ form.document() }}
+            {% for e in form.document.errors %}<p class="err">{{ e }}</p>{% endfor %}
+        </div>
+        {{ form.submit(class_="btn primary") }}
+    </form>
+</div>
+{% endblock %}

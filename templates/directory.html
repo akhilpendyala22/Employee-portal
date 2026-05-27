@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}Directory · Employee Portal{% endblock %}
+{% block content %}
+<div class="card">
+    <h1>Employee directory</h1>
+    <form method="GET" class="row">
+        {{ form.q(placeholder="Search by username or email") }}
+        {{ form.submit(class_="btn") }}
+    </form>
+    {% if users %}
+        <table class="data">
+            <thead><tr><th>Username</th><th>Email</th><th>Role</th></tr></thead>
+            <tbody>
+            {% for u in users %}
+                <tr>
+                    <td>{{ u.username }}</td>
+                    <td>{{ u.email }}</td>
+                    <td>{{ u.role.value }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+</div>
+{% endblock %}

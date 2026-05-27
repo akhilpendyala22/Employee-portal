@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}Verify · Employee Portal{% endblock %}
+{% block content %}
+<div class="card">
+    <h1>Two-factor verification</h1>
+    <p>Enter the 6-digit code from your authenticator app.</p>
+    <form method="POST" novalidate>
+        {{ form.hidden_tag() }}
+        <div class="field">
+            {{ form.token.label }}
+            {{ form.token(autocomplete="one-time-code", inputmode="numeric", autofocus=True) }}
+            {% for e in form.token.errors %}<p class="err">{{ e }}</p>{% endfor %}
+        </div>
+        {{ form.submit(class_="btn primary") }}
+    </form>
+</div>
+{% endblock %}

@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block title %}Admin · Employee Portal{% endblock %}
+{% block content %}
+<div class="card">
+    <h1>Admin panel</h1>
+    <h2>Users</h2>
+    <table class="data">
+        <thead><tr><th>ID</th><th>Username</th><th>Email</th><th>Role</th><th>Locked</th><th>Last login</th></tr></thead>
+        <tbody>
+        {% for u in users %}
+            <tr>
+                <td>{{ u.id }}</td>
+                <td>{{ u.username }}</td>
+                <td>{{ u.email }}</td>
+                <td>{{ u.role.value }}</td>
+                <td>{{ "yes" if u.is_locked() else "no" }}</td>
+                <td>{{ u.last_login_at.strftime("%Y-%m-%d %H:%M") if u.last_login_at else "-" }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<div class="card">
+    <h2>Recent security events</h2>
+    <table class="data">
+        <thead><tr><th>Time</th><th>Event</th><th>User</th><th>IP</th><th>Details</th></tr></thead>
+        <tbody>
+        {% for e in events %}
+            <tr>
+                <td>{{ e.timestamp.strftime("%Y-%m-%d %H:%M:%S") }}</td>
+                <td>{{ e.event }}</td>
+                <td>{{ e.user_id or "-" }}</td>
+                <td>{{ e.ip_address or "-" }}</td>
+                <td>{{ e.details or "" }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

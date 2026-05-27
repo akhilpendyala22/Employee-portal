@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block title %}Dashboard · Employee Portal{% endblock %}
+{% block content %}
+<div class="card">
+    <h1>Welcome, {{ current_user.username }}</h1>
+    <p class="muted">
+        Role: <strong>{{ current_user.role.value }}</strong>
+        {% if current_user.last_login_at %}
+            · Last login: {{ current_user.last_login_at.strftime("%Y-%m-%d %H:%M UTC") }}
+            from {{ current_user.last_login_ip or "unknown" }}
+        {% endif %}
+    </p>
+    {% if not current_user.mfa_enabled %}
+        <p class="warning">
+            Two-factor authentication is not enabled.
+            <a href="{{ url_for('mfa_setup') }}">Enable 2FA</a> to protect your account.
+        </p>
+    {% endif %}
+</div>
+
+<div class="card">
+    <h2>Your documents</h2>
+    <a href="{{ url_for('upload_document') }}" class="btn">Upload new</a>
+    {% if documents %}
+        <table class="data">
+            <thead><tr><th>Name</th><th>Size</th><th>Uploaded</th><th></th></tr></thead>
+            <tbody>
+            {% for d in documents %}
+                <tr>
+                    <td>{{ d.original_filename }}</td>
+                    <td>{{ (d.file_size / 1024) | round(1) }} KB</td>
+                    <td>{{ d.uploaded_at.strftime("%Y-%m-%d %H:%M") }}</td>
+                    <td>
+                        <a href="{{ url_for('download_document', id=d.id) }}">Download</a>
+                        <form method="POST" action="{{ url_for('delete_document', id=d.id) }}" class="inline"
+                              onsubmit="return confirm('Delete this document?');">
+                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                            <button type="submit" class="link-button danger">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p class="muted">No documents uploaded yet.</p>
+    {% endif %}
+</div>
+{% endblock %}

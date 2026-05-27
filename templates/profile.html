@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block title %}Profile · Employee Portal{% endblock %}
+{% block content %}
+<div class="card">
+    <h1>Profile</h1>
+    <dl class="kv">
+        <dt>Username</dt><dd>{{ current_user.username }}</dd>
+        <dt>Email</dt><dd>{{ current_user.email }}</dd>
+        <dt>Role</dt><dd>{{ current_user.role.value }}</dd>
+        <dt>2FA</dt><dd>
+            {% if current_user.mfa_enabled %}Enabled{% else %}
+                <a href="{{ url_for('mfa_setup') }}">Enable now</a>
+            {% endif %}
+        </dd>
+    </dl>
+    <form method="POST" novalidate>
+        {{ form.hidden_tag() }}
+        <div class="field">
+            {{ form.bio.label }}
+            {{ form.bio(rows=4, placeholder="Tell coworkers about yourself") }}
+            {% for e in form.bio.errors %}<p class="err">{{ e }}</p>{% endfor %}
+        </div>
+        {{ form.submit(class_="btn primary") }}
+    </form>
+</div>
+{% endblock %}
